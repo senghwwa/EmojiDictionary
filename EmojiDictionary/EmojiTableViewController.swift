@@ -9,11 +9,8 @@
 import UIKit
 
 class EmojiTableViewController: UITableViewController {
-
-    var emojis: [Emoji] = [Emoji(symbol: "😀", name: "Grinning Face",
-                                 description: "A typical smiley face.", usage: "happiness")]
-    
-    var ymojis: [Emoji] = [
+  
+    var emojis: [Emoji] = [
         Emoji(symbol: "😀", name: "Grinning Face",
               description: "A typical smiley face.", usage: "happiness"),
         Emoji(symbol: "😕", name: "Confused Face",
@@ -60,12 +57,11 @@ class EmojiTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            print("number of emojis \(emojis.count)")
             return emojis.count
         } else {
             return 0
