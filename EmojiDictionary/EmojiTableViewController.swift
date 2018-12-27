@@ -44,10 +44,13 @@ class EmojiTableViewController: UITableViewController {
         //self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        //self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
 
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -112,6 +115,10 @@ class EmojiTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    // To remove the Delete indicator
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .none
+    }
 
     /*
     // Override to support conditional rearranging of the table view.
@@ -131,9 +138,5 @@ class EmojiTableViewController: UITableViewController {
     }
     */
     
-    @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
-        let tableViewEditingMode = tableView.isEditing
-        tableView.setEditing(!tableViewEditingMode, animated: true)
-    }
     
 }

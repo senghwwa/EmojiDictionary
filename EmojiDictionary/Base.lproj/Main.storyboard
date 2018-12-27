@@ -48,13 +48,7 @@
                             <outlet property="delegate" destination="Ckd-7I-hqp" id="ghp-kE-nVG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Emoji Dictionary" largeTitleDisplayMode="always" id="gHO-ig-Swp">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="ang-45-onK">
-                            <connections>
-                                <action selector="editButtonTapped:" destination="Ckd-7I-hqp" id="VxO-ko-nrV"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Emoji Dictionary" largeTitleDisplayMode="always" id="gHO-ig-Swp"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aAu-dx-QZN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
