@@ -10,7 +10,8 @@ import UIKit
 
 class EmojiTableViewController: UITableViewController {
   
-    var emojis: [Emoji] = [
+    
+    var oldemojis: [Emoji] = [
         Emoji(symbol: "😀", name: "Grinning Face",
               description: "A typical smiley face.", usage: "happiness"),
         Emoji(symbol: "😕", name: "Confused Face",
@@ -35,15 +36,13 @@ class EmojiTableViewController: UITableViewController {
               description: "A red, broken heart.", usage: "extreme sadness"),
         Emoji(symbol: "💤", name: "Snore", description: "Three blue \'z\'s.", usage: "tired, sleepiness"),
         Emoji(symbol: "🏁", name: "Checkered Flag", description: "A black-and-white checkered flag.", usage: "completion")]
-
-
+ 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        //self.clearsSelectionOnViewWillAppear = false
+        loadEmojiData()
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.leftBarButtonItem = self.editButtonItem
 
     }
@@ -60,21 +59,29 @@ class EmojiTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        //return 1
+        return emojiGrouping.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return emojis.count
-        } else {
-            return 0
-        }
+//        if section == 0 {
+//            return emojis.count
+//        } else {
+//            return 0
+//        }
+        
+        return emojiGrouping[section].emojis.count
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "EmojiCell", for: indexPath)
-        let emoji = emojis[indexPath.row]
+//        let emoji = emojis[indexPath.row]
+//        cell.textLabel?.text = "\(emoji.symbol) - \(emoji.name)"
+//        cell.detailTextLabel?.text = emoji.description
+//        cell.showsReorderControl = true
+        
+        let emojiGroup = emojiGrouping[indexPath.section]
+        let emoji = emojiGroup.emojis[indexPath.row]
         cell.textLabel?.text = "\(emoji.symbol) - \(emoji.name)"
         cell.detailTextLabel?.text = emoji.description
         cell.showsReorderControl = true
@@ -82,8 +89,15 @@ class EmojiTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return emojiGrouping[section].groupName
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let emoji = emojis[indexPath.row]
+        let emojiGroup = emojiGrouping[indexPath.section]
+        let emoji = emojiGroup.emojis[indexPath.row]
+        
+        //let emoji = emojis[indexPath.row]
         print("\(emoji.symbol) \(indexPath)")
     }
     
@@ -110,8 +124,15 @@ class EmojiTableViewController: UITableViewController {
     
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        let movedEmoji = emojis.remove(at: fromIndexPath.row)
-        emojis.insert(movedEmoji, at: to.row)
+//        let movedEmoji = emojis.remove(at: fromIndexPath.row)
+//        emojis.insert(movedEmoji, at: to.row)
+        print("Section is \(fromIndexPath.section). From row is \(fromIndexPath.row). To row is \(to.section):\(to.row)")
+        
+        if fromIndexPath.section == to.section {
+            let movedEmoji = emojiGrouping[fromIndexPath.section].emojis.remove(at: fromIndexPath.row)
+            emojiGrouping[fromIndexPath.section].emojis.insert(movedEmoji, at: to.row)
+        }
+        
         tableView.reloadData()
     }
     
