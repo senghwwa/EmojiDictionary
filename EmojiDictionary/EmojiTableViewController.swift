@@ -66,7 +66,8 @@ class EmojiTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return emojiGrouping[section].groupName
     }
-    
+ 
+    /*
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let emoji = emojis[indexPath.row]
 
@@ -75,6 +76,7 @@ class EmojiTableViewController: UITableViewController {
         
         print("\(emoji.symbol) \(indexPath)")
     }
+    */
     
     /*
     // Override to support conditional editing of the table view.
@@ -128,15 +130,33 @@ class EmojiTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "EditEmoji" {
+            let indexPath = tableView.indexPathForSelectedRow!
+            let emoji = emojiGrouping[indexPath.section].emojis[indexPath.row]
+            let navController = segue.destination as! UINavigationController
+            let addEditEmojiTableViewController = navController.topViewController as! AddEditEmojiTableViewController
+            
+            addEditEmojiTableViewController.emoji = emoji
+        }
     }
-    */
+   
+    @IBAction func unwindToEmojiTableView(segue: UIStoryboardSegue) {
+        
+        guard segue.identifier == "saveUnwind" else {return}
+        let sourceViewController = segue.source as! AddEditEmojiTableViewController
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            
+        } else {
+            
+        }
     
+    }
     
 }
