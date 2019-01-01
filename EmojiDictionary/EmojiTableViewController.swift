@@ -35,27 +35,17 @@ class EmojiTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if section == 0 {
-//            return emojis.count
-//        } else {
-//            return 0
-//        }
         
         return emojiGrouping[section].emojis.count
+        
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "EmojiCell", for: indexPath) as! EmojiTableViewCell
         
-//       let emoji = emojis[indexPath.row]
-//        cell.textLabel?.text = "\(emoji.symbol) - \(emoji.name)"
-//        cell.detailTextLabel?.text = emoji.description
-//        cell.showsReorderControl = true
+        let cell = tableView.dequeueReusableCell(withIdentifier: "EmojiCell", for: indexPath) as! EmojiTableViewCell
         
         let emojiGroup = emojiGrouping[indexPath.section]
         let emoji = emojiGroup.emojis[indexPath.row]
-//        cell.textLabel?.text = "\(emoji.symbol) - \(emoji.name)"
-//        cell.detailTextLabel?.text = emoji.description
         
         cell.update(with: emoji)
         cell.showsReorderControl = true
@@ -139,11 +129,14 @@ class EmojiTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "EditEmoji" {
             let indexPath = tableView.indexPathForSelectedRow!
+            let groupName = emojiGrouping[indexPath.section].groupName
             let emoji = emojiGrouping[indexPath.section].emojis[indexPath.row]
             let navController = segue.destination as! UINavigationController
             let addEditEmojiTableViewController = navController.topViewController as! AddEditEmojiTableViewController
             
             addEditEmojiTableViewController.emoji = emoji
+            addEditEmojiTableViewController.groupName = groupName
+            
         }
     }
    

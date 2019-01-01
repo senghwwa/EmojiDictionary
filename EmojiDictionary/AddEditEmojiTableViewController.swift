@@ -8,10 +8,9 @@
 
 import UIKit
 
-class AddEditEmojiTableViewController: UITableViewController {
+class AddEditEmojiTableViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    
-    @IBOutlet weak var groupNameTextField: UITextField!
+    @IBOutlet weak var groupNamePicker: UIPickerView!
     @IBOutlet weak var symbolTextField: UITextField!
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
@@ -21,21 +20,51 @@ class AddEditEmojiTableViewController: UITableViewController {
     var emojiGrouping: [EmojiGrouping] = []    
     var emojis = [Emoji]()
     var emoji = Emoji(symbol: "", name: "", description: "", usage: "")
-
+    var groupName = ""
+    var pickedGroupName = ""
+    var pickedRow: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.groupNamePicker.dataSource = self
+        self.groupNamePicker.delegate = self
+        
+        if let row = emojiGroupNames.index(of: groupName) {
+            groupNamePicker.selectRow(row, inComponent: 0, animated: false)
+        }
+        
         symbolTextField.text = emoji.symbol
         nameTextfield.text = emoji.name
         descriptionTextField.text = emoji.description
         usageTextField.text = emoji.usage
         updateSaveButtonState()
+        
      }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return emojiGroupNames.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        print("\(emojiGroupNames[row]) displayed")
+        pickedGroupName = emojiGroupNames[row]
+        return pickedGroupName
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        //        UserDefaults.standard.set(groupNames[row], forKey: "selectedRow")
+        print("Row \(row) selected")
+        pickedRow = row
+    }
+    
     // MARK: - Table view data source
     /*
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -109,7 +138,7 @@ super.prepare(for: segue, sender: sender)
         
         guard segue.identifier == "saveUnwind" else {return}
         
-        let groupName = groupNameTextField.text ?? ""
+        let groupName = pickedGroupName
         let symbol = symbolTextField.text ?? ""
         let name = nameTextfield.text ?? ""
         let description = descriptionTextField.text ?? ""
@@ -120,7 +149,7 @@ super.prepare(for: segue, sender: sender)
 
 
     func updateSaveButtonState() {
-        let groupNameText = groupNameTextField.text ?? ""
+        let groupNameText = pickedGroupName
         let symbolText = symbolTextField.text ?? ""
         let nameText = nameTextfield.text ?? ""
         let descriptionText = descriptionTextField.text ?? ""
