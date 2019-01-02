@@ -9,12 +9,14 @@
 import UIKit
 
 class EmojiTableViewController: UITableViewController {
-  
+    
+    var editModeSelected = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         loadEmojiData()
-
+        
         self.navigationItem.leftBarButtonItem = self.editButtonItem
 
     }
@@ -80,23 +82,24 @@ class EmojiTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-//            // Delete the row from the data source
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        } else if editingStyle == .insert {
-//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
             
-          emojiGrouping[indexPath.section].emojis.remove(at: indexPath.row)
-          tableView.deleteRows(at: [indexPath], with: .automatic)
+            emojiGrouping[indexPath.section].emojis.remove(at: indexPath.row)
+            
+            if emojiGrouping[indexPath.section].emojis.count == 0 {
+                if emojiGrouping.count > 0 {
+                    
+                    emojiGrouping.remove(at: indexPath.section)
+                }
+            }
+            
+            tableView.reloadData()
+            
         }
     }
 
     
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-//        let movedEmoji = emojis.remove(at: fromIndexPath.row)
-//        emojis.insert(movedEmoji, at: to.row)
-
-        print("Section is \(fromIndexPath.section). From row is \(fromIndexPath.row). To row is \(to.section):\(to.row)")
         
         if fromIndexPath.section == to.section {
             let movedEmoji = emojiGrouping[fromIndexPath.section].emojis.remove(at: fromIndexPath.row)
@@ -127,7 +130,11 @@ class EmojiTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+    /*
         if segue.identifier == "EditEmoji" {
+            
+            editModeSelected = true
+            
             let indexPath = tableView.indexPathForSelectedRow!
             let groupName = emojiGrouping[indexPath.section].groupName
             let emoji = emojiGrouping[indexPath.section].emojis[indexPath.row]
@@ -136,20 +143,82 @@ class EmojiTableViewController: UITableViewController {
             
             addEditEmojiTableViewController.emoji = emoji
             addEditEmojiTableViewController.groupName = groupName
+            addEditEmojiTableViewController.emojiGrouping = emojiGrouping
+            print("Source grouping count is \(emojiGrouping.count)")
+            addEditEmojiTableViewController.editModeSelected = true
+            
+            //addEditEmojiTableViewController.editedGroupIndex = indexPath.section
+            //addEditEmojiTableViewController.editedEmojiIndex = indexPath.row
+            
+        } else {
+            
+            editModeSelected = false
+
+        }
+ */
+        
+        let navController = segue.destination as! UINavigationController
+        let addEditEmojiTableViewController = navController.topViewController as! AddEditEmojiTableViewController
+        addEditEmojiTableViewController.emojiGrouping = emojiGrouping
+
+        if segue.identifier == "EditEmoji" {
+            
+            editModeSelected = true
+            
+            let indexPath = tableView.indexPathForSelectedRow!
+            let groupName = emojiGrouping[indexPath.section].groupName
+            let emoji = emojiGrouping[indexPath.section].emojis[indexPath.row]
+            addEditEmojiTableViewController.emoji = emoji
+            addEditEmojiTableViewController.groupName = groupName
+            addEditEmojiTableViewController.editModeSelected = true
+            
+        } else {
+            
+            editModeSelected = false
             
         }
+        
     }
    
     @IBAction func unwindToEmojiTableView(segue: UIStoryboardSegue) {
         
         guard segue.identifier == "saveUnwind" else {return}
-        let sourceViewController = segue.source as! AddEditEmojiTableViewController
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            
-        } else {
-            
-        }
-    
+        
+        print("Edit mode selected is \(editModeSelected)")
+        
+        //let sourceViewController = segue.source as! AddEditEmojiTableViewController
+        
+        //let selectedSection = tableView.indexPathForSelectedRow?.section ?? -1
+        //let selectedRow = tableView.indexPathForSelectedRow?.row ?? -1
+        
+        
+        //        if originatingGroupName == sourceViewController.pickedGroupName {
+//            // then just update the emoji
+//            emojiGrouping[selectedSection].emojis[selectedRow] = sourceViewController.emoji
+//        }
+//        else {
+//            // first check if picked group exists in array
+//            // if it does then remove current emoji and remove the original group if required
+//            // then insert emoji into the picked group
+//            // then check if the emoji does not exist in target
+//            // remove the current emoji in the group and remove the group if required
+//            // insert the
+//
+//        }
+        
+//
+//        if let row = emojiGroupNames.index(of: sourceViewController.pickedGroupName) {
+//
+//        } else {
+//
+//        }
+        
+//        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+//
+//        } else {
+//
+//        }
+        
     }
     
 }
