@@ -28,10 +28,6 @@ class AddEditEmojiTableViewController: UITableViewController, UIPickerViewDataSo
 
     var groupNameExists = false
     
-    //var matchingEmojiAndGroup = false
-    //var editedGroupIndex = -1
-    //var editedEmojiIndex = -1
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.groupNamePicker.dataSource = self
@@ -62,27 +58,34 @@ class AddEditEmojiTableViewController: UITableViewController, UIPickerViewDataSo
      }
 
     override func didReceiveMemoryWarning() {
+
         super.didReceiveMemoryWarning()
+
     }
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
+
         return 1
+
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+
         return emojiGroupNames.count
+
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        //print("\(emojiGroupNames[row]) displayed")
+
         pickedGroupName = emojiGroupNames[row]
         return pickedGroupName
+
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        //        UserDefaults.standard.set(groupNames[row], forKey: "selectedRow")
-        //print("Row \(row) selected")
+
         pickedRow = row
+
     }
     
     // MARK: - Table view data source
@@ -152,20 +155,19 @@ class AddEditEmojiTableViewController: UITableViewController, UIPickerViewDataSo
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
         
         super.prepare(for: segue, sender: sender)
         
         guard segue.identifier == "saveUnwind" else {return}
         
+        //let groupName = pickedGroupName
         let symbol = symbolTextField.text ?? ""
         let name = nameTextfield.text ?? ""
         let description = descriptionTextField.text ?? ""
         let usage = usageTextField.text ?? ""
 
         emoji = Emoji(symbol: symbol, name: name, description: description, usage: usage)
-        
+        emojis.append(emoji)
         
     }
 
@@ -178,7 +180,7 @@ class AddEditEmojiTableViewController: UITableViewController, UIPickerViewDataSo
         
         // Attribute for symbol field changed to give tag value of 1
         if tag == 1 {
-            print("Tag = 1")
+
             // Make sure emoji being added does not already exist
             if !editModeSelected {
                 
