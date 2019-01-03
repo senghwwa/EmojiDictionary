@@ -14,6 +14,8 @@ class EmojiTableViewController: UITableViewController {
     var selectedSection = 0
     var selectedRow = 0
     
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadEmojiData()
@@ -79,7 +81,18 @@ class EmojiTableViewController: UITableViewController {
         return .delete
     }
 
-
+    // Check if editing mode is selected for the table and disable the add button
+    // note the need to enable and disable editing as we have overriddden the standard function
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        if editing {
+            super.setEditing(true, animated: true)
+            addButton.isEnabled = false
+        } else {
+            super.setEditing(false, animated: true)
+            addButton.isEnabled = true
+        }
+    }
+    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

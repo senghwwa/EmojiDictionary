@@ -82,12 +82,15 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="addButton" destination="cR0-gp-Xpy" id="VtF-OK-MTT"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aAu-dx-QZN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="948" y="135.38230884557723"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Edit Emoji-->
         <scene sceneID="xhV-j9-yNX">
             <objects>
                 <tableViewController id="Tv7-sJ-E0Z" customClass="AddEditEmojiTableViewController" customModule="EmojiDictionary" customModuleProvider="target" sceneMemberID="viewController">
@@ -257,7 +260,7 @@
                             <outlet property="delegate" destination="Tv7-sJ-E0Z" id="A5a-lZ-ZwJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="Rae-47-eTc">
+                    <navigationItem key="navigationItem" title="Edit Emoji" id="Rae-47-eTc">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="pnS-RO-ecb">
                             <connections>
                                 <segue destination="CT7-6g-DSF" kind="unwind" identifier="cancelUnwind" unwindAction="unwindToEmojiTableViewWithSegue:" id="sjf-64-Fkz"/>
