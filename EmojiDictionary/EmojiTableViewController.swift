@@ -18,13 +18,19 @@ class EmojiTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadEmojiData()
+        
         self.navigationItem.leftBarButtonItem = self.editButtonItem
+        
+        if let savedEmojiGrouping = EmojiGrouping.loadFromFile() {
+            emojiGrouping = savedEmojiGrouping
+        } else {
+            loadEmojiData()
+        }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
-    }
+override func viewWillAppear(_ animated: Bool) {
+    tableView.reloadData()
+}
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -63,6 +69,7 @@ class EmojiTableViewController: UITableViewController {
                 }
             }
             tableView.reloadData()
+            EmojiGrouping.saveToFile(emojiGrouping: emojiGrouping)
         }
     }
 
@@ -74,6 +81,7 @@ class EmojiTableViewController: UITableViewController {
             emojiGrouping[fromIndexPath.section].emojis.insert(movedEmoji, at: to.row)
         }
         tableView.reloadData()
+        EmojiGrouping.saveToFile(emojiGrouping: emojiGrouping)
     }
     
     // To remove the Delete indicator
@@ -123,6 +131,7 @@ class EmojiTableViewController: UITableViewController {
         let sourceViewController = segue.source as! AddEditEmojiTableViewController
         if editModeSelected {
             emojiGrouping[selectedSection].emojis[selectedRow] = sourceViewController.emoji
+            EmojiGrouping.saveToFile(emojiGrouping: emojiGrouping)
         } else {
             let pickedGroupName = sourceViewController.pickedGroupName
             let returnedEmojis = sourceViewController.emojis
@@ -141,6 +150,8 @@ class EmojiTableViewController: UITableViewController {
                 emojiGrouping.append(EmojiGrouping(groupName: pickedGroupName, emojis: returnedEmojis))
             }
             tableView.reloadData()
+            EmojiGrouping.saveToFile(emojiGrouping: emojiGrouping)
+
         }
     }
     

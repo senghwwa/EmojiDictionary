@@ -8,16 +8,35 @@
 
 import Foundation
 
-struct Emoji {
+struct Emoji: Codable{
     var symbol: String
     var name: String
     var description: String
     var usage: String
 }
 
-struct EmojiGrouping {
+struct OldEmojiGrouping: Codable {
     var groupName: String
     var emojis: [Emoji]
+}
+
+struct EmojiGrouping: Codable {
+    var groupName: String
+    var emojis: [Emoji]
+    
+    static let DocumentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentDirectory.appendingPathComponent("emojiGrouping").appendingPathExtension("plist")
+    static func loadFromFile() -> [EmojiGrouping]? {
+        guard let codedEmojiGrouping = try? Data(contentsOf: ArchiveURL) else {return nil}
+        let decoder = PropertyListDecoder()
+        return try? decoder.decode(Array<EmojiGrouping>.self, from: codedEmojiGrouping)
+    }
+    static func saveToFile(emojiGrouping: [EmojiGrouping]) {
+        let encoder = PropertyListEncoder()
+        let codedEmojiGrouping = try? encoder.encode(emojiGrouping)
+        try? codedEmojiGrouping?.write(to: ArchiveURL, options: .noFileProtection)
+        
+    }
 }
 
 var emojiGroupNames = ["Smileys & People","Animals & Nature","Food & Drink","Activity","Travel & Places","Objects","Symbols","Flags"]
